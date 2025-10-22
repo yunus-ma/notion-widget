@@ -1,38 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>翻页时钟</title>
-    <link rel="stylesheet" href="clock-widget.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>翻页时钟（时分秒）</title>
+<link rel="stylesheet" href="clock-widget.css">
 </head>
 <body>
 
-    <div class="flip-clock-container">
-        <div class="flip-clock">
-            <div class="digit-group" id="hours">
-                <div class="digit-card" data-digit="0"></div>
-                <div class="digit-card" data-digit="0"></div>
-            </div>
-            <div class="separator">:</div>
-            <div class="digit-group" id="minutes">
-                <div class="digit-card" data-digit="0"></div>
-                <div class="digit-card" data-digit="0"></div>
-            </div>
-            <div class="separator">:</div>
-            <div class="digit-group" id="seconds">
-                <div class="digit-card" data-digit="0"></div>
-                <div class="digit-card" data-digit="0"></div>
-            </div>
-        </div>
+<div class="clock">
+  <div class="flip-card" id="hours">
+    <div class="number">12</div>
+    <div class="info" id="ampm"></div>
+  </div>
+  <div class="flip-card" id="minutes">
+    <div class="number">00</div>
+    <div class="info" id="day"></div>
+  </div>
+  <div class="flip-card" id="seconds">
+    <div class="number">00</div>
+  </div>
+</div>
 
-        <div class="clock-info">
-            <div class="info-item" id="am-pm">AM</div>
-            <div class="info-item" id="day-of-week">MONDAY</div>
-        </div>
-    </div>
+<script src="clock-widget.js"></script>
 
-    <script src="clock-widget.js"></script>
 </body>
 </html>

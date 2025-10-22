@@ -1,150 +1,75 @@
 body {
-    background-color: #f0f0f0; /* 背景色 */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    font-family: 'Roboto', system-ui, sans-serif; /* 使用清晰的字体 */
-}
-
-.flip-clock-container {
+    height: 100vh;
+    background: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .clock {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.flip-clock {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* 模块间距 */
-}
-
-.digit-group {
-    display: flex;
-    gap: 10px; /* 两个数字卡片之间的间距 */
-}
-
-.separator {
-    font-size: 60px;
-    color: #333;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.digit-card {
-    position: relative;
+    gap: 10px;
+  }
+  
+  #hours {
     width: 80px;
     height: 120px;
-    font-size: 80px;
-    font-weight: 700;
-    color: white;
-    background-color: #5b9ad5; /* 图片中的蓝色 */
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    perspective: 300px; /* 为3D翻转设置视距 */
-}
-
-/* 静态的上下卡片内容 */
-.digit-card::before,
-.digit-card::after {
-    content: attr(data-digit); /* 显示数字 */
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 50%;
+  }
+  
+  #minutes {
+    width: 80px;
+    height: 120px;
+  }
+  
+  #seconds {
+    width: 80px;
+    height: 120px;
+  }
+  
+  .flip-card {
+    position: relative;
+    background: rgb(237, 176, 245);
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: center;
-    background-color: #5b9ad5;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(237, 176, 245,0.3);
     overflow: hidden;
-    box-sizing: border-box; /* 确保 padding 不影响高度 */
-}
-
-/* 上半部分 (::before) */
-.digit-card::before {
-    top: 0;
-    padding-bottom: 5px; /* 数字轻微下移 */
-    align-items: flex-end;
-    border-radius: 8px 8px 0 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* 中间线 */
-}
-
-/* 下半部分 (::after) */
-.digit-card::after {
-    bottom: 0;
-    padding-top: 5px; /* 数字轻微上移 */
-    align-items: flex-start;
-    border-radius: 0 0 8px 8px;
-}
-
-
-/* 翻页动画元素 (由 JavaScript 动态创建) 
-  我们将创建两个 "flipper" 元素来实现动画
-*/
-
-.flipper {
+  }
+  
+  .flip-card::after {
+    content: '';
     position: absolute;
+    top: 50%;
     left: 0;
     width: 100%;
-    height: 50%;
-    background-color: #5b9ad5;
-    color: white;
-    font-size: 80px;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    border-radius: 8px 8px 0 0;
-    overflow: hidden;
-    z-index: 2;
-    transform-origin: bottom; /* 翻转轴心在底部 */
-}
-
-/* 翻转的上半部分 (旧数字) */
-.flipper.top-flip {
-    top: 0;
-    padding-bottom: 5px;
-    align-items: flex-end;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    animation: flip-top 0.5s ease-in;
-}
-
-/* 翻转的下半部分 (新数字) */
-.flipper.bottom-flip {
-    bottom: 50%; /* 初始在中间偏上 */
-    padding-top: 5px;
-    align-items: flex-start;
-    border-radius: 0;
-    background-color: #5f9fdd; /* 翻转时颜色稍亮 */
-    transform: rotateX(90deg); /* 初始状态是平的, 看不见 */
-    animation: flip-bottom 0.5s ease-out 0.5s; /* 延迟0.5s, 接上一个动画 */
-}
-
-/* 翻转动画的 keyframes */
-@keyframes flip-top {
-    from { transform: rotateX(0deg); }
-    to { transform: rotateX(-90deg); }
-}
-
-@keyframes flip-bottom {
-    from { transform: rotateX(90deg); }
-    to { transform: rotateX(0deg); }
-}
-
-
-/* 底部信息样式 */
-.clock-info {
-    display: flex;
-    justify-content: space-between;
-    width: calc((80px * 2 + 10px) * 3 + 15px * 2); /* 自动计算总宽度 */
-    margin-top: 15px;
-    padding: 0 10px;
-    box-sizing: border-box;
-}
-
-.info-item {
-    font-size: 16px;
-    font-weight: 700;
-    color: #333;
-    text-transform: uppercase;
-}
+    height: 2px;
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-50%);
+  }
+  
+  .number {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .info {
+    position: absolute;
+    font-size: 14px;
+    color: #ddd;
+    padding: 4px 6px;
+  }
+  
+  #ampm {
+    bottom: 4px;
+    left: 4px;
+  }
+  
+  #day {
+    bottom: 4px;
+    right: 4px;
+  }

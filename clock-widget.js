@@ -1,90 +1,64 @@
-// 获取所有需要操作的 DOM 元素
-const hourGroup = document.querySelector('#hours');
-const minuteGroup = document.querySelector('#minutes');
-const secondGroup = document.querySelector('#seconds');
-const amPmEl = document.querySelector('#am-pm');
-const dayOfWeekEl = document.querySelector('#day-of-week');
+function pad(n){ return String(n).padStart(2,'0'); }
 
-const hourCards = hourGroup.querySelectorAll('.digit-card');
-const minuteCards = minuteGroup.querySelectorAll('.digit-card');
-const secondCards = secondGroup.querySelectorAll('.digit-card');
+function flip(card,newVal){
+  const current = card.querySelector('.number');
+  if(current.textContent === newVal) return;
 
-const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+  const flipEl = document.createElement('div');
+  flipEl.textContent = newVal;
+  flipEl.style.position = 'absolute';
+  flipEl.style.top = '0';
+  flipEl.style.left = '0';
+  flipEl.style.width = '100%';
+  flipEl.style.height = '100%';
+  flipEl.style.display = 'flex';
+  flipEl.style.justifyContent = 'center';
+  flipEl.style.alignItems = 'center';
+  flipEl.style.fontSize = '50px';
+  flipEl.style.fontWeight = 'bold';
+  flipEl.style.background = 'rgb(237, 176, 245)';
+  flipEl.style.color = '#fff';
+  flipEl.style.borderRadius = '10px';
+  flipEl.style.backfaceVisibility = 'hidden';
+  flipEl.style.transform = 'rotateX(90deg)';
+  flipEl.style.zIndex = '2';
+  card.appendChild(flipEl);
 
-// 时间更新的主循环
-function updateClock() {
-    const now = new Date();
-    
-    // 获取时间, 并格式化
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-    const dayIndex = now.getDay();
-    
-    // --- 更新 AM/PM 和 星期 ---
-    const amPm = hours >= 12 ? 'PM' : 'AM';
-    amPmEl.textContent = amPm;
-    dayOfWeekEl.textContent = days[dayIndex];
+  flipEl.animate([
+    { transform: 'rotateX(90deg)' },
+    { transform: 'rotateX(0deg)' }
+  ], { duration: 500, fill: 'forwards' });
 
-    // --- 格式化为 12 小时制和两位数 ---
-    const h12 = hours % 12 === 0 ? 12 : hours % 12; // 12小时制
-    const hStr = String(h12).padStart(2, '0');
-    const mStr = String(minutes).padStart(2, '0');
-    const sStr = String(seconds).padStart(2, '0');
-
-    // --- 检查并更新数字卡片 ---
-    // 比较当前数字和新数字，如果不同则触发翻转
-    flipCard(hourCards[0], hStr[0]);
-    flipCard(hourCards[1], hStr[1]);
-    flipCard(minuteCards[0], mStr[0]);
-    flipCard(minuteCards[1], mStr[1]);
-    flipCard(secondCards[0], sStr[0]);
-    flipCard(secondCards[1], sStr[1]);
+  setTimeout(()=>{
+    current.textContent = newVal;
+    card.removeChild(flipEl);
+  },500);
 }
 
-/**
- * 核心翻转函数
- * @param {HTMLElement} card - 要翻转的 .digit-card 元素
- * @param {string} newDigit - 要显示的新数字
- */
-function flipCard(card, newDigit) {
-    const oldDigit = card.dataset.digit;
+let lastH='', lastM='', lastS='';
 
-    // 如果数字没变，则不执行任何操作
-    if (oldDigit === newDigit) {
-        return;
-    }
+function updateClock(){
+  const now = new Date();
+  let h = now.getHours();
+  const m = now.getMinutes();
+  const s = now.getSeconds();
+  const ampm = h>=12?'PM':'AM';
+  h = h%12 || 12;
 
-    // 更新 data-digit 属性, CSS 会自动更新静态的上下部分
-    card.dataset.digit = newDigit;
+  const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const day = days[now.getDay()];
 
-    // --- 创建动画元素 ---
-    
-    // 1. 创建 "顶部翻转" (显示旧数字, 向下翻)
-    const flipperTop = document.createElement('div');
-    flipperTop.classList.add('flipper', 'top-flip');
-    flipperTop.textContent = oldDigit;
+  document.getElementById('ampm').textContent = ampm;
+  document.getElementById('day').textContent = day;
 
-    // 2. 创建 "底部翻转" (显示新数字, 从中间翻下来)
-    const flipperBottom = document.createElement('div');
-    flipperBottom.classList.add('flipper', 'bottom-flip');
-    flipperBottom.textContent = newDigit;
+  const hourStr = pad(h);
+  const minStr = pad(m);
+  const secStr = pad(s);
 
-    // 3. 将翻转元素添加到卡片中
-    card.appendChild(flipperTop);
-    card.appendChild(flipperBottom);
-
-    // 4. 监听动画结束事件，在动画完成后移除翻转元素
-    flipperTop.addEventListener('animationend', () => {
-        flipperTop.remove();
-    });
-    flipperBottom.addEventListener('animationend', () => {
-        flipperBottom.remove();
-    });
+  if(hourStr!==lastH){ flip(document.getElementById('hours'),hourStr); lastH=hourStr; }
+  if(minStr!==lastM){ flip(document.getElementById('minutes'),minStr); lastM=minStr; }
+  if(secStr!==lastS){ flip(document.getElementById('seconds'),secStr); lastS=secStr; }
 }
 
-// 立即运行一次以设置初始时间
 updateClock();
-
-// 每秒钟运行一次
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
