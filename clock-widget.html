@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>时间小部件</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: #fff;
-      color: #333;
-      font-size: 2em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>翻页时钟</title>
+    <link rel="stylesheet" href="clock-widget.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="clock"></div>
 
-  <script>
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent =
-        now.toLocaleTimeString("zh-CN", { hour12: false });
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
-  </script>
+    <div class="flip-clock-container">
+        <div class="flip-clock">
+            <div class="digit-group" id="hours">
+                <div class="digit-card" data-digit="0"></div>
+                <div class="digit-card" data-digit="0"></div>
+            </div>
+            <div class="separator">:</div>
+            <div class="digit-group" id="minutes">
+                <div class="digit-card" data-digit="0"></div>
+                <div class="digit-card" data-digit="0"></div>
+            </div>
+            <div class="separator">:</div>
+            <div class="digit-group" id="seconds">
+                <div class="digit-card" data-digit="0"></div>
+                <div class="digit-card" data-digit="0"></div>
+            </div>
+        </div>
+
+        <div class="clock-info">
+            <div class="info-item" id="am-pm">AM</div>
+            <div class="info-item" id="day-of-week">MONDAY</div>
+        </div>
+    </div>
+
+    <script src="clock-widget.js"></script>
 </body>
 </html>
